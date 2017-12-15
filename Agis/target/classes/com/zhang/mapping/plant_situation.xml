@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+  <mapper namespace="com.zhang.dao.plant_situationMapper" >
+  
+    <select id="getmessages" resultType="com.zhang.pojo.plant_situation" parameterType="java.lang.String">
+
+			SELECT farm.point,farm.zone,plant_situation.growth,plant_situation.time,plant_situation.disease_mes,plant_situation.id,farm.crop,disease_name,time
+			FROM farm,plant_situation
+			WHERE farm.point=#{0,jdbcType=VARCHAR}   AND farm.zone=plant_situation.zone
+			ORDER BY time
+			DESC
+			LIMIT 1
+		 
+  </select>
+  
+   <select id="getimage" resultType="java.lang.String" parameterType="java.lang.String">
+  
+  	SELECT image.img
+	FROM farm,image
+	WHERE farm.point=#{0,jdbcType=VARCHAR}    AND farm.zone=image.zone
+	ORDER BY image.pic_time
+	DESC
+	LIMIT 3
+  
+  </select>
+  
+   <select id="getcure" resultType="com.zhang.pojo.kp_cure" parameterType="java.lang.Integer">
+  
+  	SELECT disease_name,disease_chara,cure_treat,crop,growth
+	FROM kp_cure
+	WHERE id=#{0,jdbcType=INTEGER}
+  
+  </select>
+  
+  </mapper>

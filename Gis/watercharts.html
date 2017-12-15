@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	
+		<script type="text/javascript" src="js/echarts.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+		<script type="text/javascript" src="js/bootstrap.min.js" ></script>
+		<script>
+			m = window.location.search
+			str = m.substring(7)
+			urls='http://localhost:8080/Agis/getwaterchart.action'
+			window.onload=function(){
+				
+				getchart(str,urls);
+				}
+		</script>
+		<title></title>
+	</head>
+	<body>
+		<div >
+			<select style="height: 30px;width: 150px;">
+				
+				<option>  每月获取</option>
+				<option>  季度获取</option>
+				<option>  半年获取</option>
+			</select>
+		</div>
+		
+		<div>
+		<div id="ss" style="height: 500px; width: 700px;padding-bottom: 150px;padding-left: 400px;display: inline-block;" ></div>
+		</div>
+	</body>
+	  <script type="text/javascript">
+		  function getchart(po,urls){    
+		  		
+ 				var x=[];
+ 				var y=[];		
+ 				var zone;
+				//土地信息Ajax赋值取值 
+				$.ajax({
+			     url:urls,// 跳转到 action  
+			     type:'GET',  
+			     data:{  
+			            "point":po
+			     },  
+			     dataType:"json",
+			     success:function(data) { 
+			     		var n=data.length;
+			     		for(var i=0;i<n;i++){
+			     			x.push(data[i].g_time.substring(0,11));
+			     			y.push(data[i].water)
+			     			zone=data[i].zone
+			     		}
+			     		console.log(x);
+			     		console.log(y);
+					    var myChart = echarts.init(document.getElementById('ss'));
+								var option = {
+					    title: {
+					        text: '土壤含水量变化',
+					        subtext:"农场区域:"+zone
+					    },
+					    tooltip: {
+					        trigger: 'axis'
+					    },
+					    legend: {
+					        data:['土壤湿度值']
+					    },
+					    toolbox: {
+					        show: true,
+					        feature: {
+					            dataZoom: {
+					                yAxisIndex: 'none'
+					            },
+					            dataView: {readOnly: false},
+					            magicType: {type: ['line', 'bar']},
+					            restore: {},
+					            saveAsImage: {}
+					        }
+					    },
+					    xAxis:  {
+					        type: 'category',
+					        boundaryGap: false,
+					        data:x
+					    },
+					    yAxis: {
+					        type: 'value',
+					        axisLabel: {
+					            formatter: '{value} mg/kg'
+					        }
+					    },
+					    series: [
+					      
+					        {
+					            name:'土壤湿度值',
+					            type:'line',
+					            data:y,
+					            markPoint: {
+					                data: [
+					                    {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+					                ]
+					            },
+					            markLine: {
+					                data: [
+					                    {type: 'average', name: '平均值'},
+					                    [{
+					                        symbol: 'none',
+					                        x: '90%',
+					                        yAxis: 'max'
+					                    }, {
+					                        symbol: 'circle',
+					                        label: {
+					                            normal: {
+					                                position: 'start',
+					                                formatter: '最大值'
+					                            }
+					                        },
+					                        type: 'max',
+					                        name: '最高点'
+					                    }]
+					                ]
+					            }
+					        }
+					    ]
+					};
+										 myChart.setOption(option);
+			      
+			      
+			      
+			    
+			     	
+			     },
+			     error:function(data){
+			     	alert("土壤含钾量与湿度变化图获取错误！");
+			     }
+			   });
+	}
+				</script>
+				
+	<script>
+		$("select").change(function(){
+			if($("select option:selected").val()=="每月获取"){
+				urls='http://localhost:8080/Agis/getwaterchart.action';
+				getchart(str,urls);
+			}
+			if($("select option:selected").val()=="季度获取"){
+				urls='http://localhost:8080/Agis/getwaterchart_season.action';
+				getchart(str,urls);
+				
+			}
+			if($("select option:selected").val()=="半年获取"){
+				urls='http://localhost:8080/Agis/getwaterchart_halfyear.action';
+				getchart(str,urls);
+			}
+		})
+	</script>
+</html>
+
+

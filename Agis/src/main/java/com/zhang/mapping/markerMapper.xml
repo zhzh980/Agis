@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+   <mapper namespace="com.zhang.dao.markerMapper" >
+
+
+  <select id="getmarker" resultType="com.zhang.pojo.marker" parameterType="java.lang.String">
+		SELECT point,zone
+		FROM farm
+		
+  </select>
+  
+    <select id="getGap" resultType="com.zhang.pojo.Gap" parameterType="java.lang.String">
+		SELECT grand_info2.point, grand_info2.id,grand_info2.pH,grand_info2.spH,grand_info2.water,grand_info2.swater,MAX(G_time),nutrient_info2.cK,nutrient_info2.scK,nutrient_info2.cN,nutrient_info2.scN,nutrient_info2.cP,nutrient_info2.scP,MAX(nutrient_info2.Nu_time)
+		AS maxt 
+		FROM grand_info2,nutrient_info2
+		WHERE grand_info2.point=nutrient_info2.point
+		group by point
+		
+  </select>
+  
+   <select id="getGap_month" resultType="com.zhang.pojo.Gap" parameterType="java.lang.String">
+		SELECT grand_info2.point, grand_info2.id,AVG(nutrient_info2.cK) cK,nutrient_info2.scK,AVG(nutrient_info2.cN) cN,nutrient_info2.scN,AVG(nutrient_info2.cP) cP,nutrient_info2.scP,AVG(grand_info2.pH) pH,grand_info2.spH,AVG(grand_info2.water) water,grand_info2.swater
+		FROM grand_info2,nutrient_info2
+		WHERE grand_info2.point=nutrient_info2.point AND (grand_info2.G_time
+		BETWEEN #{0,jdbcType=VARCHAR} AND #{1,jdbcType=VARCHAR}
+		)
+		GROUP BY grand_info2.point
+		
+		
+  </select>
+  
+     <select id="getGap_week" resultType="com.zhang.pojo.Gap" parameterType="java.lang.String">
+		SELECT grand_info2.point, grand_info2.id,AVG(nutrient_info2.cK) cK,nutrient_info2.scK,AVG(nutrient_info2.cN) cN,nutrient_info2.scN,AVG(nutrient_info2.cP) cP,nutrient_info2.scP,AVG(grand_info2.pH) pH,grand_info2.spH,AVG(grand_info2.water) water,grand_info2.swater
+		FROM grand_info2,nutrient_info2
+		WHERE grand_info2.point=nutrient_info2.point AND (grand_info2.G_time
+		BETWEEN #{0,jdbcType=VARCHAR} AND #{1,jdbcType=VARCHAR}
+		)
+		GROUP BY grand_info2.point
+		
+		
+  </select>
+  
+  
+</mapper>

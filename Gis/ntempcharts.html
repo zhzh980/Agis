@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+
+		<script type="text/javascript" src="js/echarts.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script>
+			m = window.location.search;
+			str = m.substring(7);
+			urls1='http://localhost:8080/Agis/gettempchart.action';
+			urls2='http://localhost:8080/Agis/getcNchart.action';
+			window.onload = function() {
+
+				getchart(str,urls1,urls2);
+			}
+		</script>
+		<title></title>
+	</head>
+
+	<body>
+		<div>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				获取时间 <span class="caret"></span>
+			</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#">每月获取</a></li>
+					<li><a href="#">季度获取</a></li>
+					<li><a href="#">半年获取</a></li>
+				</ul>
+			</div>
+		</div>
+		<div id="ss" style="height: 400px; width: 600px;padding-left:100px;display: inline-block;"></div>
+		<div id="ss2" style="height: 400px;width: 600px;padding-left:100px;display: inline-block;"></div>
+	</body>
+	<script type="text/javascript">
+		function getchart(po,urls1,urls2) {
+
+			var x1 = [];
+			var x2 = [];
+			var y1 = [];
+			var y2 = [];
+			var zone;
+			//土地信息Ajax赋值取值 
+			$.ajax({
+				url: urls1, // 跳转到 action  
+				type: 'GET',
+				data: {
+					"point": po 
+				
+				},
+				dataType: "json",
+				success: function(data) {
+					var n = data.length;
+					for (var i = 0; i < n; i++) {
+						x1.push(data[i].g_time.substring(0, 11));
+						y1.push(data[i].temp)
+						zone = data[i].zone
+					}
+					//			     		console.log(x);
+					//			     		console.log(y);
+					var myChart = echarts.init(document.getElementById('ss'));
+					var option = {
+						title: {
+							text: '土壤温度变化',
+							subtext: "农场区域:" + zone
+						},
+						tooltip: {
+							trigger: 'axis'
+						},
+						legend: {
+							data: ['土壤温度']
+						},
+						toolbox: {
+							show: true,
+							feature: {
+								dataZoom: {
+									yAxisIndex: 'none'
+								},
+								dataView: {
+									readOnly: false
+								},
+								magicType: {
+									type: ['line', 'bar']
+								},
+								restore: {},
+								saveAsImage: {}
+							}
+						},
+						xAxis: {
+							type: 'category',
+							boundaryGap: false,
+							data: x1
+						},
+						yAxis: {
+							type: 'value',
+							axisLabel: {
+								formatter: '{value} ℃'
+							}
+						},
+						series: [
+
+							{
+								name: '土壤温度',
+								type: 'line',
+								data: y1,
+								markPoint: {
+									data: [{
+										name: '月最低',
+										value: -2,
+										xAxis: 1,
+										yAxis: -1.5
+									}]
+								},
+								markLine: {
+									data: [{
+											type: 'average',
+											name: '平均值'
+										},
+										[{
+											symbol: 'none',
+											x: '90%',
+											yAxis: 'max'
+										}, {
+											symbol: 'circle',
+											label: {
+												normal: {
+													position: 'start',
+													formatter: '最大值'
+												}
+											},
+											type: 'max',
+											name: '最高点'
+										}]
+									]
+								}
+							}
+						]
+					};
+					myChart.setOption(option);
+
+				},
+				error: function(data) {
+					alert("土壤酸碱度变化图获取错误！");
+				}
+			});
+
+			$.ajax({
+				url: urls2, // 跳转到 action  
+				type: 'GET',
+				data: {
+					"point": po 
+				},
+				dataType: "json",
+				success: function(data) {
+					var n = data.length;
+					for (var i = 0; i < n; i++) {
+						x2.push(data[i].nu_time.substring(0, 11));
+						y2.push(data[i].cN)
+
+					}
+					//			     		console.log(x);
+					//			     		console.log(y);
+					var myChart = echarts.init(document.getElementById('ss2'));
+					var option = {
+						title: {
+							text: '土壤氮含量变化',
+							subtext: "农场区域:" + zone
+						},
+						tooltip: {
+							trigger: 'axis'
+						},
+						legend: {
+							data: ['土壤氮含量']
+						},
+						toolbox: {
+							show: true,
+							feature: {
+								dataZoom: {
+									yAxisIndex: 'none'
+								},
+								dataView: {
+									readOnly: false
+								},
+								magicType: {
+									type: ['line', 'bar']
+								},
+								restore: {},
+								saveAsImage: {}
+							}
+						},
+						xAxis: {
+							type: 'category',
+							boundaryGap: false,
+							data: x2
+						},
+						yAxis: {
+							type: 'value',
+							axisLabel: {
+								formatter: '{value} mg/kg'
+							}
+						},
+						series: [
+
+							{
+								name: '土壤氮含量',
+								type: 'line',
+								data: y2,
+								markPoint: {
+									data: [{
+										name: '月最低',
+										value: -2,
+										xAxis: 1,
+										yAxis: -1.5
+									}]
+								},
+								markLine: {
+									data: [{
+											type: 'average',
+											name: '平均值'
+										},
+										[{
+											symbol: 'none',
+											x: '90%',
+											yAxis: 'max'
+										}, {
+											symbol: 'circle',
+											label: {
+												normal: {
+													position: 'start',
+													formatter: '最大值'
+												}
+											},
+											type: 'max',
+											name: '最高点'
+										}]
+									]
+								}
+							}
+						]
+					};
+					myChart.setOption(option);
+
+				},
+				error: function(data) {
+					alert("土壤氮含量变化图获取错误！");
+				}
+			});
+		}
+	</script>
+
+	<script>
+		$("a").each(function() {
+			$(this).click(function() {
+				if ($(this).html() == "每月获取") {
+					urls1='http://localhost:8080/Agis/gettempchart.action';
+					urls2='http://localhost:8080/Agis/getcNchart.action';
+					getchart(str, urls1,urls2);
+				}
+				if ($(this).html() == "季度获取") {
+					urls1='http://localhost:8080/Agis/gettempchart_season.action';
+					urls2='http://localhost:8080/Agis/getcNchart_season.action';
+					getchart(str, urls1,urls2);
+				}
+				if ($(this).html() == "半年获取") {
+					urls1='http://localhost:8080/Agis/gettempchart_halfyear.action';
+					urls2='http://localhost:8080/Agis/getcNchart_halfyear.action';
+					getchart(str, urls1,urls2);
+				}
+			})
+		})
+	</script>
+
+</html>

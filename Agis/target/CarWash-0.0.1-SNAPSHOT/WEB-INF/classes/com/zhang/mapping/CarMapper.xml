@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhang.dao.CarMapper" >
+  <resultMap id="BaseResultMap" type="com.zhang.pojo.Car" >
+    <result column="carBrand" property="carBrand" jdbcType="VARCHAR" />
+    <result column="carType" property="carType" jdbcType="VARCHAR" />
+    <result column="carColor" property="carColor" jdbcType="VARCHAR" />
+    <result column="carLicenceNum" property="carLicenceNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insertCarInfo"  parameterType="java.lang.String">
+    insert into carinfo (uID, carBrand, carType, carColor,carLicenceNum)
+    values (#{0,jdbcType=VARCHAR}, #{1,jdbcType=VARCHAR}, #{2,jdbcType=VARCHAR}, #{3,jdbcType=VARCHAR},#{4,jdbcType=VARCHAR})
+  </insert>
+<delete id="deleteCarInfo">
+delete from carinfo where uID=#{0,jdbcType=VARCHAR}
+</delete>
+<update id="updateCarInfo">
+update carinfo set
+    carBrand=#{0,jdbcType=VARCHAR}, carType=#{1,jdbcType=VARCHAR},carColor= #{2,jdbcType=VARCHAR}, carLicenceNum=#{3,jdbcType=VARCHAR} where uID = #{4,jdbcType=VARCHAR}
+</update>
+</mapper>

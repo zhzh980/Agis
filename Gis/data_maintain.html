@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/page.js"></script>
+		<link rel="stylesheet" href="css/page.css" />
+
+		<style type="text/css">
+			body {
+				background-image: url(img/background.jpg);
+			}
+			
+			header {
+				height: 60px;
+				border: 1px solid gainsboro;
+				text-align: center;
+			}
+			
+			#containers {
+				float: left;
+				min-height: 600px;
+				width: 15%;
+				border: 1px solid gainsboro;
+				box-sizing: border-box;
+				text-align: center;
+			}
+			
+			article {
+				float: left;
+				width: 85%;
+				min-height: 600px;
+				box-sizing: border-box;
+			}
+			
+			#main {
+				width: 90%;
+				margin: 20px auto;
+				min-height: 600px;
+				background-color: #eee;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1 style="color: #fff;">病虫害知识库维护</h1>
+		</header>
+		<div id="main">
+			<div id="containers">
+				<h4><img src="img/即时监测.png" height="30px" width="30px" align="absbottom">病虫害知识库信息</h4>
+				<img src="img/病虫害界面图.jpg" width="150px" height="150px" style="margin-top: 50px;" />
+				<!--
+                	作者：张子豪
+                	时间：2017-06-08
+                	描述：显示按钮
+                -->
+				<div style="padding-left: 30px;padding-top: 100px;">
+
+					<div style="float: left;">
+						<button type="button" class="btn btn-default" title="选择区域" style="background-color: #3176B1;color: white;" data-container="body" data-toggle="modal" data-target="#myModal2">
+								增添病虫害知识条目
+								</button>
+					</div>
+				</div>
+			</div>
+			<article>
+				<table class="table table-striped">
+					<caption>病虫害知识库信息如下</caption>
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>农作物</th>
+							<th>生长期</th>
+							<th>病虫害名称</th>
+							<th>病虫害特征</th>
+							<th>治疗措施</th>
+							<th>处理操作</th>
+						</tr>
+					</thead>
+					<tbody id="fa">
+						<!--<tr>
+							<td>Tanmay</td>
+							<td>Bangalore</td>
+							<td>560001</td>
+							<td>sss</td>
+							<td>dada</td>
+							<td>sadf</td>
+							<td><a href="www.baidu.com">删除</a>/修改</td>
+						</tr>-->
+
+					</tbody>
+				</table>
+<!--
+	作者：张子豪
+	时间：2017-06-08
+	描述：修改弹出框
+-->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">病虫害知识库信息</h4>
+							</div>
+							<div class="modal-body">
+								<form class="form-horizontal">
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">作物</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="crop1" placeholder="Email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">虫害名称</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="disease_name1" placeholder="Password">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">虫害特征</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="disease_chara1" placeholder="Password">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">生长期</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="growth1" placeholder="Password">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">治疗措施</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="cure_treat1" placeholder="Password">
+										</div>
+									</div>
+									<input type="hidden" id="qqq" />
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<button type="button" class="btn btn-primary" onclick="getkp_update()">保存</button>
+							</div>
+						</div>
+					</div>
+				</div>
+<!--
+	作者：张子豪
+	时间：2017-06-08
+	描述：增添病虫害条目弹出框
+-->
+				<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">病虫害知识库信息</h4>
+							</div>
+							<div class="modal-body">
+								<form class="form-horizontal">
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">作物</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="crop2" placeholder="请输入作物名称">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">虫害名称</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="disease_name2" placeholder="请输入病虫害名称">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">虫害特征</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="disease_chara2" placeholder="请输入病虫害特征">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">生长期</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="growth2" placeholder="请输入生长期">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">治疗措施</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="cure_treat2" placeholder="请输入治疗措施">
+										</div>
+									</div>
+									
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<button type="button" class="btn btn-primary" onclick="getkp_insert()">保存</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div style="height:50px ;width: 80%;">
+					<div class="zzsc">
+						<!--currentpage="1" numbercount="100"-->
+						<ul class="page" maxshowpageitem="5" pagelistcount="10" id="page"></ul>
+					</div>
+				</div>
+
+			</article>
+
+		</div>
+	</body>
+	<script>
+		$(function() {
+			$.ajax({
+				url: 'http://localhost:8080/Agis/getkp_count.action', // 跳转到 action  
+				type: 'GET',
+				dataType: "json",
+				success: function(data) {
+
+					$("#page").initPage(data, 1, GG.kk);
+				},
+				error: function(data) {
+					alert("知识库总条目获取错误！");
+				}
+			});
+
+		})
+		var GG = {
+			"kk": function(mm) {
+				$.ajax({
+					url: 'http://localhost:8080/Agis/getkp_info.action', // 跳转到 action  
+					type: 'GET',
+					dataType: "json",
+					data: {
+						"page": mm,
+						"num": $("#page").attr("pagelistcount")
+					},
+					success: function(data) {
+
+						console.log(data);
+						$("#fa").children().remove();
+						for (var i = 0; i < data.length; i++) {
+							var currentdata = data[i];
+							var html = '<tr>' + '<td>' + currentdata.id + '</td>' + '<td>' + currentdata.crop + '</td>' + '<td>' + currentdata.growth + '</td>' + '<td>' + currentdata.disease_name + '</td>' + '<td>' + currentdata.disease_chara + '</td>' + '<td>' + currentdata.cure_treat + '</td>' + '<td><a onclick="deletes(' + currentdata.id + ')">删除</a>/<a href="###" data-toggle="modal" data-target="#myModal" onclick="getkp_this(' + currentdata.id + ')">修改</a></td>' + '</tr>'
+							$("#fa").append(html);
+						}
+					},
+					error: function(data) {
+						alert("知识库获取错误！");
+					}
+				});
+			}
+		}
+	</script>
+
+	<script>
+		function deletes(a) {
+			$.ajax({
+				url: 'http://localhost:8080/Agis/getkp_delete.action', // 跳转到 action  
+				type: 'GET',
+
+				data: {
+					"id": a,
+
+				},
+				success: function(data) {
+					location.reload(true);
+
+				},
+				error: function(data) {
+					alert("删除错误！");
+				}
+			});
+		}
+	</script>
+
+	<script>
+		//修改时弹出框显示当前值
+		function getkp_this(a) {
+			
+			$.ajax({
+				url: 'http://localhost:8080/Agis/getkp_this.action', // 跳转到 action  
+				type: 'GET',
+
+				data: {
+					"id": a,
+
+				},
+				success: function(data) {
+					$("#crop1").val(data.crop)
+					$("#disease_name1").val(data.disease_name)
+					$("#disease_chara1").val(data.disease_chara)
+					$("#growth1").val(data.growth)
+					$("#cure_treat1").val(data.cure_treat)
+					$("#qqq").val(data.id)
+				},
+				error: function(data) {
+					alert("查询错误！");
+				}
+			});
+		}
+
+	</script>
+<script>
+			//修改提交保存
+		function getkp_update() {
+			$.ajax({
+				url: 'http://localhost:8080/Agis/getkp_update.action', // 跳转到 action  
+				type: 'POST',
+				
+				data: {
+
+					"id": $("#qqq").val(),
+					"crop": $("#crop1").val(),
+					"disease_name": $("#disease_name1").val(),
+					"disease_chara": $("#disease_chara1").val(),
+					"growth": $("#growth1").val(),
+					"cure_treat": $("#cure_treat1").val()
+
+				},
+				success: function(data) {
+
+					location.reload(true);
+
+				},
+				error: function(data) {
+					alert("修改错误！");
+				}
+			});
+		}
+</script>
+
+<script>
+	function getkp_insert(){
+		
+		$.ajax({
+				url: 'http://localhost:8080/Agis/getkp_insert.action', // 跳转到 action  
+				type: 'POST',
+				
+				data: {
+
+					
+					"crop": $("#crop2").val(),
+					"disease_name": $("#disease_name2").val(),
+					"disease_chara": $("#disease_chara2").val(),
+					"growth": $("#growth2").val(),
+					"cure_treat": $("#cure_treat2").val()
+
+				},
+				success: function(data) {
+
+					location.reload(true);
+
+				},
+				error: function(data) {
+					alert("增添错误！");
+				}
+			});
+	}
+</script>
+</html>

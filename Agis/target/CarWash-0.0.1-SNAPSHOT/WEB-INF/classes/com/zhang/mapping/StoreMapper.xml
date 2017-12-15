@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhang.dao.StoreMapper" >
+  <resultMap id="BaseResultMap" type="com.zhang.pojo.Store" >
+    <result column="userPhoneNum" property="userPhoneNum" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="userSurName" property="userSurName" jdbcType="VARCHAR" />
+    <result column="userSex" property="userSex" jdbcType="VARCHAR" />
+    <result column="userPassword" property="userPassword" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insertStoreInfo"  parameterType="com.zhang.pojo.Store">
+    insert into storeinfo (userPhoneNum, userName,userSurName, userSex,userPassword)
+    values (#{userPhoneNum,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},#{userSurName,jdbcType=VARCHAR},#{userSex,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR})
+  </insert>
+  <select id="isRegist" resultType="java.lang.String" parameterType="java.lang.String">
+  select userPhoneNum  from storeinfo where userPhoneNum = #{0,jdbcType=VARCHAR}
+  </select>
+ <select id="login" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select userPhoneNum , userPassword ,id ,userName ,userSurName ,userSex from storeinfo where userPhoneNum = #{0,jdbcType=VARCHAR} and userPassword = #{1,jdbcType=VARCHAR}
+  </select>
+</mapper>

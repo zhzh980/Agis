@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	
+		<script type="text/javascript" src="js/echarts.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+		<script type="text/javascript" src="js/bootstrap.min.js" ></script>
+		<script>
+			window.onload=function(){getchart("108.628928,34.458941")}
+		</script>
+		<title></title>
+	</head>
+	<body>
+		<div id="ss" style="height: 400px; width: 600px;"></div>
+</body>
+	  <script type="text/javascript">
+		  function getchart(po){    
+		  		alert(666)
+ 				var x=[];
+ 				var y1=[];
+ 				var y2=[];
+				//土地信息Ajax赋值取值 
+				$.ajax({
+			     url:'http://localhost:8080/Agis/getptchart.action',// 跳转到 action  
+			     type:'GET',  
+			     data:{  
+			            "point":po
+			     },  
+			     dataType:"json",
+			     success:function(data) { 
+			     		var n=data.length;
+			     		for(var i=0;i<n;i++){
+			     			x.push(data[i].G_time);
+			     			y1.push(data.cP)
+			     			y2.push(data.temp)
+			     		}
+					    var myChart = echarts.init(document.getElementById('ss'));
+								var option = {
+					    title: {
+					        text: '土壤磷含量与温度变化',
+					        
+					    },
+					    tooltip: {
+					        trigger: 'axis'
+					    },
+					    legend: {
+					        data:['土壤磷含量','土壤温度']
+					    },
+					    toolbox: {
+					        show: true,
+					        feature: {
+					            dataZoom: {
+					                yAxisIndex: 'none'
+					            },
+					            dataView: {readOnly: false},
+					            magicType: {type: ['line', 'bar']},
+					            restore: {},
+					            saveAsImage: {}
+					        }
+					    },
+					    xAxis:  {
+					        type: 'category',
+					        boundaryGap: false,
+					        data:x
+					    },
+					    yAxis: {
+					        type: 'value',
+					        axisLabel: {
+					            formatter: '{value} °C'
+					        }
+					    },
+					    series: [
+					        {
+					            name:'土壤磷含量',
+					            type:'line',
+					            data:y1,
+					            markPoint: {
+					                data: [
+					                    {type: 'max', name: '最大值'},
+					                    {type: 'min', name: '最小值'}
+					                ]
+					            },
+					            markLine: {
+					                data: [
+					                    {type: 'average', name: '平均值'}
+					                ]
+					            }
+					        },
+					        {
+					            name:'土壤温度',
+					            type:'line',
+					            data:y2,
+					            markPoint: {
+					                data: [
+					                    {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+					                ]
+					            },
+					            markLine: {
+					                data: [
+					                    {type: 'average', name: '平均值'},
+					                    [{
+					                        symbol: 'none',
+					                        x: '90%',
+					                        yAxis: 'max'
+					                    }, {
+					                        symbol: 'circle',
+					                        label: {
+					                            normal: {
+					                                position: 'start',
+					                                formatter: '最大值'
+					                            }
+					                        },
+					                        type: 'max',
+					                        name: '最高点'
+					                    }]
+					                ]
+					            }
+					        }
+					    ]
+					};
+										 myChart.setOption(option);
+			      
+			      
+			      
+			    
+			     	
+			     },
+			     error:function(data){
+			     	alert("病虫害及苗情信息获取错误！");
+			     }
+			   });
+	}
+				</script>
+</html>
+
+

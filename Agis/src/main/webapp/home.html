@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+		<title></title>
+		
+		<style type="text/css">
+			
+			 #allmap {width: 100%; height:100%;overflow: hidden;font-family:"微软雅黑";}
+			 body,html{height:100%,width:100%}
+			 #allmap label{
+			 	max-width: none;
+			 }
+			 
+		body{
+				background-image: url(img/background.jpg);
+				
+			}
+			header{
+				height:60px;
+				border:1px solid gainsboro;
+				text-align: center;
+				
+			}
+			
+			#main{
+				width:90%;
+				margin:20px auto;
+				
+				background-color: #eee;
+			}
+			#main .select{
+				height:40px;
+				text-align: center;
+			}
+			#containers #show-menu{
+				float: left;
+				min-height: 600px;
+				width:15%;
+				border: 1px solid gainsboro;
+				box-sizing: border-box;
+				text-align: center;
+				
+			}
+			
+			
+			ul{
+				margin:0;
+				padding:0;
+				text-align: left;
+				
+			}
+			ul li{
+				text-align: center;
+				list-style: none;
+				border:1px solid #ccc;
+				padding :10px 10px;
+				cursor: pointer;
+			}
+			#containers #show-data{
+				float: right;
+				min-height: 600px;
+				width: 23%;
+				border:1px solid gainsboro;
+				box-sizing: border-box;
+				text-align: center;
+
+			}
+			#containers article{
+				float: left;
+				width:62%;
+				min-height: 600px;
+				box-sizing: border-box;
+			}
+			#clear{
+				clear: both;
+			}
+			footer{
+				min-height: 60px;
+				color:#444;
+				text-align: center;
+		
+			};
+
+			
+		</style>
+		
+			<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vrfvZVauPAxORVu0dsBaZ5H7qigMseUC"></script>
+
+
+	</head>
+	<body>
+		
+		<header>
+			<h1 style="color: #fff;">农业土地管理GIS子系统</h1>
+		</header>
+		<div id = "main">
+					<div class="select" id="farm_list">
+						<!--
+		                	作者：zhzh980@sina.com
+		                	时间：2017-05-16
+		                	描述：省-城市-农场三级联动
+		                -->
+		                  <script type="text/javascript" src="js/area.js" ></script>
+		                  <script type="text/javascript" src="js/demo.js" ></script>
+		      
+						        
+						            <div>
+						                省份：
+						                <select name="province">
+						                </select>
+						                城市：<select name="city">
+						                </select>
+						                县区：<select name="county">
+						                </select>
+						                
+							<!--
+			                	作者：zhzh980@sina.com
+			                	时间：2017-05-14
+			                	描述：添加天气
+			                -->
+							   
+							<iframe style="float: right;" allowtransparency="true" frameborder="0" width="200" height="30" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=3&z=2&t=0&v=0&d=2&bd=0&k=&f=&q=1&e=1&a=1&c=57036&w=180&h=36&align=right"></iframe>
+						            </div>
+						         
+						           
+						        
+						        <script type="text/javascript">
+						            //异步调用百度js  
+//						            function map_load() {
+//						                var load = document.createElement("script");
+//						                load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init";
+//						                document.body.appendChild(load);
+//						            }
+//						            window.onload = map_load;
+						
+						
+						            //根据经纬度显示地区
+						            function loadPlace(longitude, latitude, level) {
+						                if (parseFloat(longitude) > 0 || parseFloat(latitude) > 0) {
+						                    level = level || 13;
+						                    //绘制地图
+						                   
+						                    var point = new BMap.Point(longitude, latitude); //地图中心点 
+						                    map.centerAndZoom(point, level); // 初始化地图,设置中心点坐标和地图级别。  
+						           
+						                }
+						            }
+						        </script>
+						   
+
+                
+                
+                
+                	
+					
+				<!--农场：
+				<select name="farm">
+					<option onclick="clearData(this)" value="116.076794,39.597765">中粮智慧农场</option>
+					<option onclick="clearData(this)" value="108.629907,34.459544" selected="selected">马庄农场</option>
+					<option onclick="clearData(this)" value="109.101565,34.223161">白鹿原生态农场</option>
+				</select>-->
+					
+   					 </div>
+                
+				
+				
+
+			
+		<div id="containers">
+			<aside id="show-menu">
+				<h4><img src="img/平台.png" height="30px" width="30px" align="absbottom"/>管理平台</h4>
+				<ul class="nav nav-pills nav-stacked">
+		            <li id="1" class="active" onclick="change(this)"><a href="#">土地信息查询</a></li>
+					<li id="2" onclick="change(this),clearData(this)"><a href="#">水资源分布</a></li>
+					<li id="3" onclick="change(this),clearData(this)"> <a href="#">病虫害监测</a></li>
+					<li id="4" onclick="change(this),clearData(this)"><a href="#">数值分析</a></li>
+					<li id="5" onclick="change(this)"><a href="#">Java</a></li>
+					<li id="6" onclick="change(this)"><a href="#">PHP</a></li>
+				</ul>
+
+			</aside>
+			<article  id="allmap">
+				<div>
+					
+				</div>
+			
+			</article>
+			<aside id ="show-data">
+				<!--
+                	作者：zhzh980@sina.com
+                	时间：2017-05-15
+                	描述：数值分析展示
+                -->
+                <div id="chartData" style="display: none;">
+                	<h4><img src="img/chart.png" height="30px" width="30px" align="absbottom">数值分析</h4>
+                	<table class="table table-bordered">
+                			<thead>
+							    <tr>
+							      <th>农场区域：</th>
+							      <td id="sd_name3"></th>
+							    </tr>
+							  </thead>						
+							  <tbody>
+					</table>
+					
+					<div style="padding: 100px 50px 10px;" >
+						    <button type="button" class="btn btn-default" title="水分变化统计"
+						            data-container="body" data-toggle="popover" data-placement="left"
+						            data-content="左侧的 Popover 中的一些内容">
+						        水分变化统计
+						    </button>
+                
+                
+               		 </div>
+               </div>
+				
+				
+				
+				
+				<!--
+                	作者：zhzh980@sina.com
+                	时间：2017-05-14
+                	描述：灌溉情况展示
+                -->
+				<div id="waterData" style="display: none;">
+					<h4><img src="img/灌溉.png" height="30px" width="30px" align="absbottom"/>灌溉情况</h4>
+							
+				  	<table class="table table-bordered">
+							  <caption></caption>
+							  <thead>
+							    <tr>
+							      <th>农场区域：</th>
+							      <td id="sd_name2"></th>
+							    </tr>
+							  </thead>						
+							  <tbody>
+							    <tr>
+							      <th>数据采集时间：</th>
+							      <td id="G_time2"></td>
+							     
+							    </tr>
+							 
+							</table>
+				  <table class="table table-hover">
+				  	
+	               <caption>土壤信息</caption>
+	                    <thead>
+		                  <tr>
+		                  		<th>农田编号</th>
+								 <th>土壤水分</th>
+								<th>建议水分</th>
+								<th>灌溉建议</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td id="wfarmid"></td>
+									<td id="wwater"></td>
+									<td id="wstwater"></td>
+									<td id="wsuwater"></td>
+								</tr>
+								
+							</tbody>
+				  </table>
+				</div>
+				<!--
+                	作者：zhzh980@sina.com
+                	时间：2017-05-14
+                	描述：土壤信息资源展示
+                -->
+				<div id="showData">
+				<h4><img src="img/数据.png" height="30px" width="30px" align="absbottom"/>土壤信息</h4>
+				
+				<table class="table table-bordered">
+							  <caption></caption>
+							  <thead>
+							    <tr>
+							      <th>农场区域：</th>
+							      <td id="sd_name"></th>
+							    </tr>
+							  </thead>						
+							  <tbody>
+							    <tr>
+							      <th>数据采集时间：</th>
+							      <td id="G_time"></td>
+							     
+							    </tr>
+							 
+							</table>
+				       <!--<div align="left" style="height: auto">农场区域：<font size=2px id="sd_name"></font></div>
+				       <div align="left" style="height:auto">数据采集时间：<font size=2px id="G_time"></font></div>  -->
+				<table class="table table-hover">
+	               <caption>基础信息</caption>
+	                                      
+	                    <thead>
+		                  <tr>
+								 <th>土壤pH值</th>
+								<th>土壤水分</th>
+								<th>土壤温度</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td id="ph"></td>
+									<td id="water"></td>
+									<td id="temp"></td>
+								</tr>
+								
+							</tbody>
+				</table>
+				
+				<table class="table table-hover">
+	               <caption>氮磷钾含量</caption>
+	                    <thead>
+		                  <tr>
+								 <th>土壤氮含量</th>
+								<th>土壤磷含量</th>
+								<th>土壤钾含量</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td id="cN"></td>
+									<td id="cP"></td>
+									<td id="cK"></td>
+								</tr>
+								
+							</tbody>
+				</table>
+			</div>
+			</aside>
+		</div>
+		<div id="clear"></div>
+		<footer>
+			CopyRight©1307010226-张子豪
+			
+		</footer>
+		</div>
+		
+
+	</body>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+	<script type="text/javascript">
+		// 百度地图API功能
+		var map = new BMap.Map("allmap");    // 创建Map实例
+	map.centerAndZoom(new BMap.Point(108.629907,34.459544), 17);  // 初始化地图,设置中心点坐标和地图级别
+	map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+	map.setCurrentCity("西安");          // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	//map.setMapType(mapType: BMAP_SATELLITE_MAP);
+	
+	$(function(){
+			//切换不同农场
+			$('#farm_list').change(function(){
+			var point = $('#farm_list option:selected').val();
+			var arrays = point.split(",");
+			var pointX = arrays[0];
+			var pointY = arrays[1];
+			map.centerAndZoom(new BMap.Point(pointX, pointY), 17);
+			
+			})
+		
+	
+	}
+	
+	)
+	
+	//设置农场中每块区域的标注
+	//
+	//
+//	var point = new BMap.Point(108.629907,34.459544);
+//	var marker = new BMap.Marker(point);        // 创建标注    
+//	map.addOverlay(marker);    // 将标注添加到地图中
+//	var label1 = new BMap.Label("1号区域",{offset:new BMap.Size(20,-10)});
+//	marker.setLabel(label1);
+//	//测试---------------------------------------------
+//	var point1 = new BMap.Point(108.62343,34.45343);
+//	var marker2 = new BMap.Marker(point1);
+//	map.addOverlay(marker2);
+//	
+//	var label2 = new BMap.Label("2号区域",{offset:new BMap.Size(20,-10)});
+//	marker2.setLabel(label2);
+	//------------------------------------
+	//var p="108.629907,34.459544";
+//	marker.addEventListener("click", function(){
+//		a(marker.getPosition().lng.toFixed(6)+","+marker.getPosition().lat.toFixed(6));
+//	});
+//	marker2.addEventListener("click",function(){
+//		a(marker2.getPosition().lng.toFixed(6)+","+marker2.getPosition().lat.toFixed(6));//否则小数点最后一位是0，会默认略掉
+//	})
+
+	//a()是获取标识点地理信息的方法，重要
+	//author:zhzh
+	//po是向后台传入的标注点的坐标
+	function a(po){    
+// 	alert("您点击了标注");  
+	//土地信息Ajax赋值取值 
+	$.ajax({
+     url:'/getit.action',// 跳转到 action  
+     type:'GET',  
+     data:{  
+            "point":po
+     },  
+     dataType:"json",
+     success:function(data) {  
+       //土地信息
+       $("#ph").html(data.ph)
+       $("#water").html(data.water)
+       $("#cN").html(data.cN)
+       $("#cK").html(data.cK)
+       $("#temp").html(data.temp)
+       $("#cP").html(data.cP)
+       //灌溉信息
+       $("#wfarmid").html(data.name)
+       $("#wwater").html(data.water)
+       $("#wstwater").html(data.swater)
+       $("#sd_name").html(data.name)
+       $("#G_time").html(data.g_time.substring(0,data.g_time.length-5))
+       $("#sd_name2").html(data.name)
+       $("#G_time2").html(data.g_time.substring(0,data.g_time.length-5))
+       $("#sd_name3").html(data.name)
+       //console.log(data)
+       //alert(marker.getPosition().lng+"-"+marker.getPosition().lat);
+      
+       if(data.water>data.swater){     //需要继续处理
+       	$("#wsuwater").html("喷灌")
+       }
+       else{
+       	$("#wsuwater").html("滴灌")
+       }
+     },
+     error:function(data){
+     	alert("信息获取错误！");
+     }
+   });
+	}
+	
+
+	</script>
+	
+	<!--
+    	作者：zhzh980@sina.com
+    	时间：2017-05-14
+    	描述：平台管理效果JS
+    -->
+	<script>
+		function change(obj){
+			$(obj).addClass("active").siblings().removeClass("active")
+			if(obj.id==2){
+				$("#showData,#chartData").fadeOut("slow",function(){
+					
+				})
+				$("#waterData").fadeIn("slow",function(){
+					
+				})
+			}
+			if(obj.id==1){
+				$("#showData").fadeIn("slow",function(){
+					
+				})
+				$("#waterData,#chartData").fadeOut("slow",function(){
+					
+				})
+			}
+			if(obj.id==4){
+				$("#chartData").fadeIn("slow",function(){
+					
+				})
+				$("#waterData,#showData").fadeOut("slow",function(){
+					
+				})
+				
+			}
+			
+		}
+		function clearData(obj){
+			$("td").html("")
+		}
+	</script>
+	<!--
+    	作者：zhzh980@sina.com
+    	时间：2017-05-14
+    	描述：水资源分布，多边形覆盖，渲染效果
+    
+  	<script type="text/javascript">
+    	var polygon = new BMap.Polygon([   //参数都要改！！！！！！！！！！如何删除特定的覆盖物！！！！！
+		new BMap.Point(116.387112,39.920977),
+		new BMap.Point(116.385243,39.913063),
+		new BMap.Point(116.394226,39.917988),
+		new BMap.Point(116.401772,39.921364),
+		new BMap.Point(116.41248,39.927893)
+	], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});  //创建多边形
+    </script>
+	-->
+
+	<!--
+    	作者：zhzh980@sina.com
+    	时间：2017-05-15
+    	描述：自动加载地图marker点
+    -->
+    <script type="text/javascript">
+    		//自动加载覆盖点
+							
+				window.onload=function(){// 	alert("您点击了标注");  
+						//土地信息Ajax赋值取值 
+						//alert(111);
+					
+						$.ajax({
+					     url:'/getmarker.action',// 跳转到 action  
+					     type:'GET',  
+					  
+					     dataType:"json",
+					     success:function(data) {  
+					       	  var n = data.length;
+					       	  var points=[];//坐标值，String
+					       	  var names=[];//从后台接收的农场区域
+					       	  var markers=[];//标注
+					       	  var t = [];//0是lng，1是lat
+					       	  var labels=[];//标注旁的文字说明
+
+					       	  for(var i=0;i<n;i++){
+					       	  	points.push(data[i].point)
+					       	  	names.push(data[i].fname)
+					       	  }
+					       	  console.log(names)
+					       	  for(var i=0;i<n;i++){
+					       	  	t = points[i].split(",");
+					       	  	 var lngs = parseFloat(t[0]).toFixed(6);
+					       	  	 var lats = parseFloat(t[1]).toFixed(6);//字符串转浮点
+					       	  
+					       	  	var point = new BMap.Point(lngs,lats);
+					       	  	 markers[i] = new BMap.Marker(point);        // 创建标注    
+					       	  
+								map.addOverlay(markers[i]);    // 将标注添加到地图中
+							//	console.log(lngs[i]+","+lats[i]);
+								labels[i] = new BMap.Label(names[i],{offset:new BMap.Size(20,-10)});
+								markers[i].setLabel(labels[i]);
+					       	  
+					       	  }
+					       	  //标注绑定事件(用闭包，循环绑定)
+					       	  for(var i=0;i<n;i++){
+					       	  	(function(i){
+					       	  		markers[i].addEventListener("click", function(){
+									a(markers[i].getPosition().lng.toFixed(6)+","+markers[i].getPosition().lat.toFixed(6));
+									//alert(666);
+					       	  	});
+					       	  	})(i);
+					       	  }
+
+					     },
+					     error:function(data){
+					     	alert("Marker获取错误！");
+					     }
+					   });
+					   
+				    
+				    	//描述：覆盖物渲染效果
+				    
+				    
+				    
+					   $.ajax({
+					     url:'/getCover.action',// 跳转到 action  
+					     type:'GET',  
+					  
+					     dataType:"json",
+					     success:function(data) {  
+					       	  var n1 = data.length;
+					       	  var polypoints=[];//坐标值，String
+							  var nwpoint;
+							  var nepoint;
+							  var swpoint;
+							  var sepoint;
+							  var id;
+					       	  var polygons=[];//覆盖物
+					       	  var t0 = [];//0是lng，1是lat
+					       	  var t1 = [];
+					       	  var t2 = [];
+					       	  var t3 = [];
+					       	  var lngs1=[];
+					       	  var lats1=[];
+					       	  for(var i=0;i<n;i++){
+					       	  	id.push(data[i].id);
+					       	  	nepoint.push(data[i].nepoint);
+					       	  	nwpoint.push(data[i].nwpoint);
+					       	  	swpoint.push(data[i].swpoint);
+					       	  	sepoint.push(data[i].sepoint);
+					       	
+					       	  	t0 = nepoint.split(",");
+					       	  	t1 = nwpoint.split(",");
+					       	  	t2 = swpoint.split(",");
+					       	  	t3 = sepoint.split(",");
+					       	  	 lngs1[0] = parseFloat(t0[0]).toFixed(6);
+					       	  	 lats1[0] = parseFloat(t0[1]).toFixed(6);//字符串转浮点
+					       	  	 lngs1[1] = parseFloat(t1[0]).toFixed(6);
+					       	  	 lats1[1] = parseFloat(t1[1]).toFixed(6);//字符串转浮点
+					       	  	 lngs1[2] = parseFloat(t2[0]).toFixed(6);
+					       	  	 lats1[2] = parseFloat(t2[1]).toFixed(6);//字符串转浮点
+					       	  	 lngs1[3] = parseFloat(t3[0]).toFixed(6);
+					       	  	 lats1[3] = parseFloat(t3[1]).toFixed(6);//字符串转浮点
+					       	  	 for(var m=0;m<n1;m++){
+					       	  	     polypoints[m] = new BMap.Point(lngs[i],lats[i]);
+					       	  		}	
+					       	  		polygons[id] = new BMap.Polygon([polypoints[0],polypoints[1],polypoints[2],polypoints[3]
+										], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});  //创建多边形
+					       	  
+								        
+							//	console.log(lngs[i]+","+lats[i]);
+					
+					    	}
+								map.addOverlay(polygons[id]);          //增加多边形
+					     },
+					     error:function(data){
+					     	alert("覆盖渲染获取错误！");
+					     }
+					   });
+				}
+    </script>
+    
+
+    
+    <!--
+    	作者：zhzh980@sina.com
+    	时间：2017-05-15
+    	描述：数值分析的水分折线图的JS
+    -->
+    <script type="text/javascript" src="js/echarts.js" ></script>
+	<script type="text/javascript">
+				    			
+						  var myChart = echarts.init(document.getElementById('water_chart'));
+							var option = {
+				    title: {
+				        text: '未来一周气温变化',
+				        subtext: '纯属虚构'
+				    },
+				    tooltip: {
+				        trigger: 'axis'
+				    },
+				    legend: {
+				        data:['最高气温','最低气温']
+				    },
+				    toolbox: {
+				        show: true,
+				        feature: {
+				            dataZoom: {
+				                yAxisIndex: 'none'
+				            },
+				            dataView: {readOnly: false},
+				            magicType: {type: ['line', 'bar']},
+				            restore: {},
+				            saveAsImage: {}
+				        }
+				    },
+				    xAxis:  {
+				        type: 'category',
+				        boundaryGap: false,
+				        data: ['周一','周二','周三','周四','周五','周六','周日']
+				    },
+				    yAxis: {
+				        type: 'value',
+				        axisLabel: {
+				            formatter: '{value} °C'
+				        }
+				    },
+				    series: [
+				        {
+				            name:'最高气温',
+				            type:'line',
+				            data:[11, 11, 15, 13, 12, 13, 10],
+				            markPoint: {
+				                data: [
+				                    {type: 'max', name: '最大值'},
+				                    {type: 'min', name: '最小值'}
+				                ]
+				            },
+				            markLine: {
+				                data: [
+				                    {type: 'average', name: '平均值'}
+				                ]
+				            }
+				        },
+				        {
+				            name:'最低气温',
+				            type:'line',
+				            data:[1, -2, 2, 5, 3, 2, 0],
+				            markPoint: {
+				                data: [
+				                    {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+				                ]
+				            },
+				            markLine: {
+				                data: [
+				                    {type: 'average', name: '平均值'},
+				                    [{
+				                        symbol: 'none',
+				                        x: '90%',
+				                        yAxis: 'max'
+				                    }, {
+				                        symbol: 'circle',
+				                        label: {
+				                            normal: {
+				                                position: 'start',
+				                                formatter: '最大值'
+				                            }
+				                        },
+				                        type: 'max',
+				                        name: '最高点'
+				                    }]
+				                ]
+				            }
+				        }
+				    ]
+				};
+									 myChart.setOption(option);
+								</script>
+			<!--
+            	作者：zhzh980@sina.com
+            	时间：2017-05-16
+            	描述：图表框点击弹出的特效
+            -->
+            <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	        <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+			<script>
+				
+				$(function () { 
+					$("[data-toggle='popover']").popover();
+				});
+
+			</script>
+			<!--
+            	作者：zhzh980@sina.com
+            	时间：2017-05-16
+            	描述：省-城市-农场三级联动的JS
+            -->
+      
+   
+	
+</html>

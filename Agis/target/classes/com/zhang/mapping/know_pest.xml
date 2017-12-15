@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ <mapper namespace="com.zhang.dao.know_pestMapper" >
+ 
+  <select id="getkp_count" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT COUNT(*)
+		FROM know_pest
+		
+		
+  </select>
+  
+  <select id="getkp_info" resultType="com.zhang.pojo.know_pest" parameterType="java.util.Map" >
+  			SELECT *
+			FROM know_pest
+			LIMIT  #{a}, #{b}
+			  
+  
+  </select>
+  
+  
+    <delete id="getkp_delete"  parameterType="java.lang.Integer" >
+  			DELETE  
+			FROM know_pest
+			WHERE id=#{id}
+			  
+  
+  </delete>
+  
+     <select id="getkp_this" resultType="com.zhang.pojo.know_pest" parameterType="java.lang.Integer" >
+  			SELECT *  
+			FROM know_pest
+			WHERE id=#{id}
+			  
+  
+  </select>
+  
+    <insert id="getkp_insert" parameterType="java.lang.String">
+			INSERT 
+	        INTO know_pest(crop,disease_name,disease_chara,growth,cure_treat)
+	        VALUES (#{0,jdbcType=VARCHAR} ,#{1,jdbcType=VARCHAR},#{2,jdbcType=VARCHAR},#{3,jdbcType=VARCHAR},#{4,jdbcType=VARCHAR})
+		 
+  </insert>
+  
+   <update id="getkp_update">
+ 	UPDATE know_pest
+	SET crop=#{1,jdbcType=VARCHAR},disease_name=#{2,jdbcType=VARCHAR},disease_chara=#{3,jdbcType=VARCHAR},growth=#{4,jdbcType=VARCHAR},cure_treat=#{5,jdbcType=VARCHAR}
+	WHERE id=#{0,jdbcType=INTEGER}
+ 
+ </update>
+ 
+  <update id="set_gi">
+ 	UPDATE farm_gi,farm
+	SET swater=#{1,jdbcType=VARCHAR},scN=#{2,jdbcType=VARCHAR},scP=#{3,jdbcType=VARCHAR},scK=#{4,jdbcType=VARCHAR},spH=#{5,jdbcType=VARCHAR}
+	WHERE farm.point=#{0,jdbcType=VARCHAR} and farm.zone=farm_gi.zone
+ 
+ </update>
+  </mapper>

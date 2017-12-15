@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+   <mapper namespace="com.zhang.dao.GdInfoMapper" >
+
+
+  <select id="getInfo" resultType="com.zhang.pojo.GdInfo" parameterType="java.lang.String">
+
+		SELECT point,id,water,temp,pH,crop,g_time,swater,spH,zone
+		FROM grand_info2
+		WHERE point=#{0,jdbcType=VARCHAR}
+		ORDER BY G_time
+		DESC
+		LIMIT 1
+  </select>
+  
+    <select id="getInfo2" resultType="com.zhang.pojo.GdInfo_nu" parameterType="java.lang.String">
+
+		SELECT point,crop,cP,scP,cN,scN,cK,scK,Nu_time
+		FROM nutrient_info2
+		WHERE point=#{0,jdbcType=VARCHAR}
+		ORDER BY Nu_time
+		DESC
+		LIMIT 1
+  </select>
+  
+    <select id="getInfo_month" resultType="com.zhang.pojo.GdInfo" parameterType="java.lang.String">
+
+		SELECT point,id,AVG(water) water,swater,AVG(temp) temp,AVG(pH) pH,spH,crop,zone
+		FROM grand_info2
+		WHERE point=#{0,jdbcType=VARCHAR} and(G_time
+		BETWEEN #{1,jdbcType=VARCHAR} AND #{2,jdbcType=VARCHAR})
+
+  </select>
+  
+      <select id="getInfo_month2" resultType="com.zhang.pojo.GdInfo_nu" parameterType="java.lang.String">
+
+		SELECT point,AVG(cK) cK,scK,AVG(cN) cN,scN,AVG(cP) cP,scP,crop
+		FROM nutrient_info2
+		WHERE point=#{0,jdbcType=VARCHAR} and(Nu_time
+		BETWEEN #{1,jdbcType=VARCHAR} AND #{2,jdbcType=VARCHAR})
+
+  </select>
+  
+      <select id="getInfo_week" resultType="com.zhang.pojo.GdInfo" parameterType="java.lang.String">
+
+		SELECT point,id,AVG(water) water,swater,AVG(temp) temp,AVG(pH) pH,spH,crop,zone
+		FROM grand_info2
+		WHERE point=#{0,jdbcType=VARCHAR} and(G_time
+		BETWEEN #{1,jdbcType=VARCHAR} AND #{2,jdbcType=VARCHAR})
+
+  </select>
+  
+    <select id="getInfo_week2" resultType="com.zhang.pojo.GdInfo_nu" parameterType="java.lang.String">
+
+		SELECT point,AVG(cK) cK,scK,AVG(cN) cN,scN,AVG(cP) cP,scP,crop
+		FROM nutrient_info2
+		WHERE point=#{0,jdbcType=VARCHAR} and(Nu_time
+		BETWEEN #{1,jdbcType=VARCHAR} AND #{2,jdbcType=VARCHAR})
+
+  </select>
+ 
+</mapper>

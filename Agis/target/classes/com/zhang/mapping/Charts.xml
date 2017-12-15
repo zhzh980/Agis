@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+   <mapper namespace="com.zhang.dao.ChartsMapper" >
+
+
+  <select id="getpHchart" resultType="com.zhang.pojo.pHChart" parameterType="java.lang.String">
+
+		SELECT grand_info2.point,grand_info2.zone,grand_info2.pH,grand_info2.G_time,farm_info.farm_name
+		FROM grand_info2,farm_info,farm
+		WHERE grand_info2.point=#{0,jdbcType=VARCHAR} AND farm.point=grand_info2.point 
+		AND farm.farm_id=farm_info.farm_id AND(G_time
+		BETWEEN #{1,jdbcType=VARCHAR} and #{2,jdbcType=VARCHAR}
+		)
+		
+ 
+  </select>
+  
+  <select id="getcNchart" resultType="com.zhang.pojo.cNChart" parameterType="java.lang.String">
+  
+       SELECT nutrient_info2.point,nutrient_info2.zone,nutrient_info2.cN,nutrient_info2.Nu_time,farm_info.farm_name
+		FROM farm_info,nutrient_info2,farm
+		WHERE nutrient_info2.point=#{0,jdbcType=VARCHAR} AND nutrient_info2.point=farm.point AND farm.farm_id=farm_info.farm_id
+		AND (Nu_time
+		BETWEEN #{1,jdbcType=VARCHAR} AND #{2,jdbcType=VARCHAR})
+  
+  
+  </select>
+  
+    <select id="getwaterchart" resultType="com.zhang.pojo.waterChart" parameterType="java.lang.String">
+  
+        SELECT grand_info2.point,grand_info2.zone,grand_info2.water,grand_info2.G_time,farm_info.farm_name
+		FROM grand_info2,farm_info,farm
+		WHERE grand_info2.point=#{0,jdbcType=VARCHAR} AND farm.point=grand_info2.point 
+		AND farm.farm_id=farm_info.farm_id AND(G_time
+		BETWEEN #{1,jdbcType=VARCHAR} and #{2,jdbcType=VARCHAR}
+		)
+  
+  
+  </select>
+  
+     <select id="gettempchart" resultType="com.zhang.pojo.tempChart" parameterType="java.lang.String">
+  
+        SELECT grand_info2.point,grand_info2.zone,grand_info2.temp,grand_info2.G_time,farm_info.farm_name
+		FROM grand_info2,farm_info,farm
+		WHERE grand_info2.point=#{0,jdbcType=VARCHAR} AND farm.point=grand_info2.point 
+		AND farm.farm_id=farm_info.farm_id AND(G_time
+		BETWEEN #{1,jdbcType=VARCHAR} and #{2,jdbcType=VARCHAR}
+		)
+  
+  
+  </select>
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhang.dao.ShopMapper" >
+  <insert id="insertShopInfo"  parameterType="com.zhang.pojo.Shop">
+    insert into shopinfo (shopPhone,shopName, shopInt,serviceTime, shopAddress,price1,price2,isToDoor)
+    values (#{shopPhone,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR},#{shopInt,jdbcType=VARCHAR},#{serviceTime,jdbcType=VARCHAR}, #{shopAddress,jdbcType=VARCHAR}, #{price1,jdbcType=VARCHAR}, #{price2,jdbcType=VARCHAR}, #{isToDoor,jdbcType=VARCHAR})
+  </insert>
+  <select id="isShopRegist" resultType="java.lang.String" parameterType="java.lang.String">
+   select shopPhone  from shopinfo where shopPhone = #{0,jdbcType=VARCHAR}
+  </select>
+</mapper>
